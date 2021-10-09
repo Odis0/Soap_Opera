@@ -36,7 +36,7 @@ class Room:
     def GetRoomInventory(self):
         return self.__roomInventory
 
-    def SetRoomInventory(self, targetEntity):
+    def AddRoomInventory(self, targetEntity):
         self.__roomInventory.append(targetEntity)
 
     def RemoveRoomInventory(self,targetEntity):
@@ -58,10 +58,10 @@ class Entity:
         return self.__entityName
 
 
-def EntityMove(targetEntity,targetDestination):
-    roomList[targetDestination].SetRoomInventory(targetEntity)
+def EntityMove(targetEntity,targetDestination):   #Pass in the objects themselves.
+    targetDestination.AddRoomInventory(targetEntity)
     roomList[targetEntity.GetEntityRoom()].RemoveRoomInventory(targetEntity)
-    print(f"{targetEntity.GetEntityName()} moved from {roomList[targetEntity.GetEntityRoom()].GetRoomName()} to {roomList[targetDestination].GetRoomName()}.")
+    print(f"{targetEntity.GetEntityName()} moved from {roomList[targetEntity.GetEntityRoom()].GetRoomName()} to {targetDestination.GetRoomName()}.")
 
 
 
@@ -94,5 +94,5 @@ roomList = [Room("Basement", 1 , 2, 0, connectionList=[RoomID.Kitchen]),
 print(roomList[RoomID.Kitchen].GetRoomConnections())
 print(roomList[RoomID.Entry_Hall].GetRoomInventory())
 print(roomList[RoomID.Kitchen].GetRoomInventory())
-EntityMove(entityList[EntityID.Ethan],RoomID.Entry_Hall)
+EntityMove(entityList[EntityID.Ethan],roomList[RoomID.Entry_Hall])
 print(roomList[RoomID.Entry_Hall].GetRoomInventory())
