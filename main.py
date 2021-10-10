@@ -1,5 +1,8 @@
 
 import enum
+import random
+
+
 class RoomID():
     Basement = 0
     Front_Yard = 1
@@ -27,7 +30,7 @@ class Room:
     def __init__(self, roomID, roomName, xAxis, yAxis, zAxis, connectionList, roomInventory = []):
         self.__roomID = roomID
         self.__roomName = roomName
-        self.__roomCoordinates = (xAxis, yAxis, zAxis)
+        self.__roomCoordinates = (xAxis, yAxis, zAxis)  #All entities should have a coordinate, but they pass it up to director, which will then tell them what else is in the room. Inventory should be enums, delete the object when it goes in inventory. You just create an instance of the object from inventory when you need it.
         self.__connectionList = connectionList
         self.__roomInventory = roomInventory
 
@@ -79,34 +82,57 @@ def GetEntityRoomName(targetEntity):
     return GetEntityRoom(targetEntity).GetRoomName()
 
 
+Ethan = Entity("Ethan",RoomID.Kitchen)
+
+entityList = [Ethan]
+
+Basement =          Room(0, "Basement", 1 , 2, 0, connectionList=[RoomID.Kitchen])  #Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
+Front_Yard =        Room(1, "Front Yard", 0 , 1, 1, connectionList=[RoomID.Entry_Hall])
+Office =            Room(2, "Office", 0, 1, 1, connectionList=[RoomID.Entry_Hall])
+Entry_Hall =        Room(3, "Entry Hall", 1, 1, 1, connectionList=[RoomID.Office,RoomID.Garage,RoomID.Kitchen])
+Garage =            Room(4, "Garage", 2, 1, 1, connectionList=[RoomID.Entry_Hall])
+Kitchen =           Room(5, "Kitchen", 1, 2, 1, connectionList=[RoomID.Entry_Hall,RoomID.Living_Room,RoomID.Basement,RoomID.Landing],roomInventory=[Ethan])
+Daughter_Room =     Room(6, "Daughter's Room", 0,3,1,connectionList=[RoomID.Living_Room])
+Living_Room =       Room(7, "Living Room",1,3,1, connectionList=[RoomID.Daughter_Room,RoomID.Kitchen,RoomID.Back_Patio,RoomID.Down_Bathroom])
+Down_Bathroom =     Room(8, "Downstairs Bathroom",2,3,1, connectionList=[RoomID.Living_Room])
+Back_Patio =        Room(9, "Backyard Patio",1,4,1, connectionList=[RoomID.Living_Room,RoomID.Pool])
+Pool =              Room(10, "Pool",2,4,1, connectionList=[RoomID.Back_Patio])
+Closet =            Room(11, "Walk-in Closet",1,0,2, connectionList=[RoomID.Mast_Bedroom])
+Mast_Bathroom =     Room(12, "Master Bathroom",0,1,2, connectionList=[RoomID.Mast_Bedroom])
+Mast_Bedroom =      Room(13, "Master Bedroom",1,1,2, connectionList=[RoomID.Mast_Bathroom,RoomID.Closet,RoomID.Landing])
+Son_Room =          Room(14, "Son's Room",0,2,2, connectionList=[RoomID.Landing])
+Landing =           Room(15, "Upper Landing", 1,2,2, connectionList=[RoomID.Kitchen,RoomID.Mast_Bedroom,RoomID.Son_Room,RoomID.Studio])
+Studio =            Room(16, "Art Studio",1,3,2, connectionList=[RoomID.Landing])
 
 
-entityList = [Entity("Ethan",RoomID.Kitchen)
-]
 
-
-roomList = [Room(0, "Basement", 1 , 2, 0, connectionList=[RoomID.Kitchen]),
-            Room(1, "Front Yard", 0 , 1, 1, connectionList=[RoomID.Entry_Hall]),
-            Room(2, "Office", 0, 1, 1, connectionList=[RoomID.Entry_Hall]),
-            Room(3, "Entry Hall", 1, 1, 1, connectionList=[RoomID.Office,RoomID.Garage,RoomID.Kitchen]),
-            Room(4, "Garage", 2, 1, 1, connectionList=[RoomID.Entry_Hall]),
-            Room(5, "Kitchen", 1, 2, 1, connectionList=[RoomID.Entry_Hall,RoomID.Living_Room,RoomID.Basement,RoomID.Landing],roomInventory=[entityList[EntityID.Ethan]]),
-            Room(6, "Daughter's Room", 0,3,1,connectionList=[RoomID.Living_Room]),
-            Room(7, "Living Room",1,3,1, connectionList=[RoomID.Daughter_Room,RoomID.Kitchen,RoomID.Back_Patio,RoomID.Down_Bathroom]),
-            Room(8, "Downstairs Bathroom",2,3,1, connectionList=[RoomID.Living_Room]),
-            Room(9, "Backyard Patio",1,4,1, connectionList=[RoomID.Living_Room,RoomID.Pool]),
-            Room(10, "Pool",2,4,1, connectionList=[RoomID.Back_Patio]),
-            Room(11, "Walk-in Closet",1,0,2, connectionList=[RoomID.Mast_Bedroom]),
-            Room(12, "Master Bathroom",0,1,2, connectionList=[RoomID.Mast_Bedroom]),
-            Room(13, "Master Bedroom",1,1,2, connectionList=[RoomID.Mast_Bathroom,RoomID.Closet,RoomID.Landing]),
-            Room(14, "Son's Room",0,2,2, connectionList=[RoomID.Landing]),
-            Room(15, "Upper Landing", 1,2,2, connectionList=[RoomID.Kitchen,RoomID.Mast_Bedroom,RoomID.Son_Room,RoomID.Studio]),
-            Room(16, "Art Studio",1,3,2, connectionList=[RoomID.Landing])
+roomList = [Basement,
+            Front_Yard,
+            Office,
+            Entry_Hall,
+            Garage,
+            Kitchen,
+            Daughter_Room,
+            Living_Room,
+            Down_Bathroom,
+            Back_Patio,
+            Pool,
+            Closet,
+            Mast_Bathroom,
+            Mast_Bedroom,
+            Son_Room,
+            Landing,
+            Studio
             ]
 
-print(roomList[RoomID.Kitchen].GetRoomConnections())
-print(roomList[RoomID.Entry_Hall].GetRoomInventory())
-print(roomList[RoomID.Kitchen].GetRoomInventory())
-EntityMove(entityList[EntityID.Ethan],roomList[RoomID.Entry_Hall])
-print(roomList[RoomID.Entry_Hall].GetRoomInventory())
-print(f"Ethan is now in {GetEntityRoomName(entityList[EntityID.Ethan])}")
+print(Kitchen.GetRoomConnections())
+print(Entry_Hall.GetRoomInventory())
+print(Kitchen.GetRoomInventory())
+EntityMove(Ethan,Entry_Hall)
+print(Entry_Hall.GetRoomInventory())
+print(f"Ethan is now in {GetEntityRoomName(Ethan)}")
+print(random.choice(GetEntityRoom(Ethan).GetRoomConnections()))
+
+#Code in ways for entities to target each other that aren't dependent on entities knowing things about the room. Room is calling entity functions and feeding in parameters. Have director be over rooms. Director calls updates on rooms.
+#Any knowledge of character surroundings should come from game world. It shouldn't be stored inside the entity. Also, have a subclass of entity for characters, then inanimate objects.
+#Entities should have their own coordinates,but the world should keep track of where they are. In update have characters and items send coordinates to director.
