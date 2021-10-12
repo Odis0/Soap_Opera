@@ -32,10 +32,13 @@ class World:
         self.__moduleDictionary = {}
 
         for x, y in enumerate(worldModuleList):
-            self.__moduleDictionary[x] = y
+            self.__moduleDictionary[x] = y, []
 
     def GetWorldModuleDictionary(self):
         return self.__moduleDictionary
+
+    def MakeWorldModuleConnection(self, worldModuleID, connectingID):
+        self.__moduleDictionary[worldModuleID][1].append(connectingID)
 
 class WorldModule:
     def __init__(self, room, xAxis, yAxis, zAxis):
@@ -88,8 +91,9 @@ Office1
 world1 = World(moduleList)
 
 print(world1.GetWorldModuleDictionary())
-print(world1.GetWorldModuleDictionary()[1].GetXAxis())
+world1.MakeWorldModuleConnection(0,1)
 
+print(world1.GetWorldModuleDictionary()[0][1])
 
 ''''
 def EntityMove(targetEntity,targetDestination):   #Pass in the objects themselves.
