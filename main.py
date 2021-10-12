@@ -37,8 +37,12 @@ class World:
     def GetWorldModuleDictionary(self):
         return self.__moduleDictionary
 
-    def MakeWorldModuleConnection(self, worldModuleID, connectingID):
+    def AddWorldModuleConnection(self, worldModuleID, connectingID):
         self.__moduleDictionary[worldModuleID][1].append(connectingID)
+
+    def GetWorldModuleConnections(self, worldModuleID):
+        return self.__moduleDictionary[worldModuleID][1]
+
 
 class WorldModule:
     def __init__(self, room, xAxis, yAxis, zAxis):
@@ -78,22 +82,50 @@ Landing = Room("Upper Landing"),
 Studio = Room("Art Studio")
 
 
+Basement1 = WorldModule(Basement, 1,2,0)
 Front_Yard1 = WorldModule(Front_Yard,0,1,1)
-Entry_Hall1 = WorldModule(Entry_Hall,1,1,1)
 Office1 = WorldModule(Office,0,1,1)
+Entry_Hall1 = WorldModule(Entry_Hall,1,1,1)
+Garage1 = WorldModule(Garage,2,1,1)
+Kitchen1 = WorldModule(Kitchen, 1,2,1),
+Daughter_Room1 = WorldModule(Daughter_Room, 0,3,1),
+Living_Room1 = WorldModule(Living_Room, 1,3,1),
+Down_Bathroom1 = WorldModule(Down_Bathroom, 2,3,1),
+Back_Patio1 = WorldModule(Back_Patio, 1,4,1),
+Pool1 = WorldModule(Pool, 2,4,1),
+Closet1 = WorldModule(Closet, 1,0,2),
+Mast_Bathroom1 = WorldModule(Mast_Bathroom, 0,1,2),
+Mast_Bedroom1 = WorldModule(Mast_Bedroom,1,1,2),
+Son_Room1 = WorldModule(Son_Room, 0,2,2),
+Landing1 = WorldModule(Landing, 1,2,2),
+Studio1 = WorldModule(Studio, 1,3,2)
 
 moduleList = [
+Basement1,
 Front_Yard1,
+Office1,
 Entry_Hall1,
-Office1
+Garage1,
+Kitchen1,
+Daughter_Room1,
+Living_Room1,
+Down_Bathroom1,
+Back_Patio1,
+Pool1,
+Closet1,
+Mast_Bathroom1,
+Mast_Bedroom1,
+Son_Room1,
+Landing1,
+Studio1
 ]
 
 world1 = World(moduleList)
 
 print(world1.GetWorldModuleDictionary())
-world1.MakeWorldModuleConnection(0,1)
+world1.AddWorldModuleConnection(RoomID.Entry_Hall,RoomID.Kitchen)
 
-print(world1.GetWorldModuleDictionary()[0][1])
+print(world1.GetWorldModuleConnections(RoomID.Entry_Hall))
 
 ''''
 def EntityMove(targetEntity,targetDestination):   #Pass in the objects themselves.
