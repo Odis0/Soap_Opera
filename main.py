@@ -27,31 +27,48 @@ class EntityID():
 
 
 class Room:
-    def __init__(self, roomID, roomName, xAxis, yAxis, zAxis, connectionList, roomInventory = []):
-        self.__roomID = roomID
+    def __init__(self, roomName):
+        #self.__roomID = roomID
         self.__roomName = roomName
-        self.__roomCoordinates = (xAxis, yAxis, zAxis)  #All entities should have a coordinate, but they pass it up to director, which will then tell them what else is in the room. Inventory should be enums, delete the object when it goes in inventory. You just create an instance of the object from inventory when you need it.
-        self.__connectionList = connectionList
-        self.__roomInventory = roomInventory
-
-    def GetRoomConnections(self):
-        return self.__connectionList
-
-    def GetRoomInventory(self):
-        return self.__roomInventory
-
-    def AddRoomInventory(self, targetEntity):
-        self.__roomInventory.append(targetEntity)
-
-    def RemoveRoomInventory(self,targetEntity):
-        self.__roomInventory.remove(targetEntity)
+        #self.__roomCoordinates = (xAxis, yAxis, zAxis)  #All entities should have a coordinate, but they pass it up to director, which will then tell them what else is in the room. Inventory should be enums, delete the object when it goes in inventory. You just create an instance of the object from inventory when you need it.
+        # self.__connectionList = connectionList
+#        self.__roomInventory = roomInventory
 
     def GetRoomName(self):
         return self.__roomName
 
-    def GetRoomID(self):
-        return self.__roomID
 
+
+
+class World:
+    def __init__(self, worldModules):
+        self.__worldModules = []
+
+class WorldModule:
+    def __init__(self, room, xAxis, yAxis, zAxis, roomInventory = []):
+        self.__room = room
+        self.__xAxis = xAxis
+        self.__yAxis = yAxis
+        self.__zAxis = zAxis
+        self.__roomInventory = roomInventory
+
+Basement =          Room("Basement")  #Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
+Front_Yard =        Room("Front Yard")
+Office =            Room("Office")
+Entry_Hall =        Room("Entry Hall")
+Garage =            Room("Garage")
+Kitchen =           Room("Kitchen")
+Daughter_Room =     Room("Daughter's Room")
+Living_Room =       Room("Living Room")
+Down_Bathroom =     Room("Downstairs Bathroom")
+Back_Patio =        Room("Backyard Patio")
+Pool =              Room("Pool")
+Closet =            Room("Walk-in Closet")
+Mast_Bathroom =     Room("Master Bathroom")
+Mast_Bedroom =      Room("Master Bedroom")
+Son_Room =          Room("Son's Room")
+Landing =           Room("Upper Landing")
+Studio =            Room("Art Studio")
 
 class Entity:
     def __init__(self, entityName, entityRoom):
@@ -85,7 +102,7 @@ def GetEntityRoomName(targetEntity):
 Ethan = Entity("Ethan",RoomID.Kitchen)
 
 entityList = [Ethan]
-
+'''
 Basement =          Room(0, "Basement", 1 , 2, 0, connectionList=[RoomID.Kitchen])  #Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
 Front_Yard =        Room(1, "Front Yard", 0 , 1, 1, connectionList=[RoomID.Entry_Hall])
 Office =            Room(2, "Office", 0, 1, 1, connectionList=[RoomID.Entry_Hall])
@@ -136,3 +153,5 @@ print(random.choice(GetEntityRoom(Ethan).GetRoomConnections()))
 #Code in ways for entities to target each other that aren't dependent on entities knowing things about the room. Room is calling entity functions and feeding in parameters. Have director be over rooms. Director calls updates on rooms.
 #Any knowledge of character surroundings should come from game world. It shouldn't be stored inside the entity. Also, have a subclass of entity for characters, then inanimate objects.
 #Entities should have their own coordinates,but the world should keep track of where they are. In update have characters and items send coordinates to director.
+
+'''
