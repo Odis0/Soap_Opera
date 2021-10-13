@@ -28,20 +28,44 @@ class EntityID():
 
 
 class World:
-    def __init__(self, worldModuleList):
-        self.__moduleDictionary = {}
+    def __init__(self):
+        self.__worldModule3DArray = [[[None for i in range(5)] for j in range(5)] for k in range(5)]
+        self.__roomTuples = [
+        ("Basement", 1, 2, 0),
+        ("Front_Yard", 0, 1, 1),
+        ("Office", 0, 1, 1),
+        ("Entry_Hall", 1, 1, 1),
+        ("Garage", 2, 1, 1),
+        ("Kitchen", 1, 2, 1),
+        ("Daughter_Room", 0, 3, 1),
+        ("Living_Room", 1, 3, 1),
+        ("Down_Bathroom", 2, 3, 1),
+        ("Back_Patio", 1, 4, 1),
+        ("Pool", 2, 4, 1),
+        ("Closet", 1, 0, 2),
+        ("Mast_Bathroom", 0, 1, 2),
+        ("Mast_Bedroom", 1, 1, 2),
+        ("Son_Room", 0, 2, 2),
+        ("Landing", 1, 2, 2),
+        ("Studio", 1, 3, 2)
+                    ]
 
-        for x, y in enumerate(worldModuleList):
-            self.__moduleDictionary[x] = y, []
+    def AddRoom(self, roomName):
+        room = Room(roomName)
+        return room
 
-    def GetWorldModuleDictionary(self):
-        return self.__moduleDictionary
+    def AddWorldModule(self, roomTuple):
+        room = self.AddRoom(roomTuple[0])
+        worldModule = WorldModule(room,roomTuple[1],roomTuple[2],roomTuple[3])
+        return worldModule
 
-    def AddWorldModuleConnection(self, worldModuleID, connectingID):
-        self.__moduleDictionary[worldModuleID][1].append(connectingID)
+    def CreateAllModules(self):
+        for i in self.__roomTuples:
+            module = self.AddWorldModule(i)
+            self.__worldModule3DArray[i[1]][i[2]][i[3]] = module
 
-    def GetWorldModuleConnections(self, worldModuleID):
-        return self.__moduleDictionary[worldModuleID][1]
+    def GetWorldModule3DArray(self):
+        return self.__worldModule3DArray
 
 
 class WorldModule:
@@ -50,82 +74,49 @@ class WorldModule:
         self.__xAxis = xAxis
         self.__yAxis = yAxis
         self.__zAxis = zAxis
-        self.__roomDictionary = {}
+
+    def GetModuleRoom(self):
+        return self.__room
+
+
+
+# Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
+
+
+#World Module Creation Function, Including Rooms
+
+
+
+world1 = World()
+world1.CreateAllModules()
+print(world1.GetWorldModule3DArray()[2][4][1].GetModuleRoom().GetRoomName())
 
 
 
 
-
-
-    def GetXAxis(self):
-        return self.__xAxis
-
-    # Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
-
-
-Basement = Room("Basement"),
-Front_Yard = Room("Front Yard"),
-Office = Room("Office"),
-Entry_Hall = Room("Entry Hall"),
-Garage = Room("Garage"),
-Kitchen = Room("Kitchen"),
-Daughter_Room = Room("Daughter's Room"),
-Living_Room = Room("Living Room"),
-Down_Bathroom = Room("Downstairs Bathroom"),
-Back_Patio = Room("Backyard Patio"),
-Pool = Room("Pool"),
-Closet = Room("Walk-in Closet"),
-Mast_Bathroom = Room("Master Bathroom"),
-Mast_Bedroom = Room("Master Bedroom"),
-Son_Room = Room("Son's Room"),
-Landing = Room("Upper Landing"),
-Studio = Room("Art Studio")
-
-
-Basement1 = WorldModule(Basement, 1,2,0)
-Front_Yard1 = WorldModule(Front_Yard,0,1,1)
-Office1 = WorldModule(Office,0,1,1)
-Entry_Hall1 = WorldModule(Entry_Hall,1,1,1)
-Garage1 = WorldModule(Garage,2,1,1)
-Kitchen1 = WorldModule(Kitchen, 1,2,1),
-Daughter_Room1 = WorldModule(Daughter_Room, 0,3,1),
-Living_Room1 = WorldModule(Living_Room, 1,3,1),
-Down_Bathroom1 = WorldModule(Down_Bathroom, 2,3,1),
-Back_Patio1 = WorldModule(Back_Patio, 1,4,1),
-Pool1 = WorldModule(Pool, 2,4,1),
-Closet1 = WorldModule(Closet, 1,0,2),
-Mast_Bathroom1 = WorldModule(Mast_Bathroom, 0,1,2),
-Mast_Bedroom1 = WorldModule(Mast_Bedroom,1,1,2),
-Son_Room1 = WorldModule(Son_Room, 0,2,2),
-Landing1 = WorldModule(Landing, 1,2,2),
-Studio1 = WorldModule(Studio, 1,3,2)
-
-moduleList = [
-Basement1,
-Front_Yard1,
-Office1,
-Entry_Hall1,
-Garage1,
-Kitchen1,
-Daughter_Room1,
-Living_Room1,
-Down_Bathroom1,
-Back_Patio1,
-Pool1,
-Closet1,
-Mast_Bathroom1,
-Mast_Bedroom1,
-Son_Room1,
-Landing1,
-Studio1
+roomList = [
+"Basement",
+"Front Yard",
+"Office",
+"Entry Hall",
+"Garage",
+"Kitchen",
+"Daughter's Room",
+"Living Room",
+"Downstairs Bathroom",
+"Backyard Patio",
+"Pool",
+"Walk-in Closet",
+"Master Bathroom",
+"Master Bedroom",
+"Son's Room",
+"Upper Landing",
+"Art Studio"
 ]
 
-world1 = World(moduleList)
 
-print(world1.GetWorldModuleDictionary())
-world1.AddWorldModuleConnection(RoomID.Entry_Hall,RoomID.Kitchen)
 
-print(world1.GetWorldModuleConnections(RoomID.Entry_Hall))
+
 
 ''''
 def EntityMove(targetEntity,targetDestination):   #Pass in the objects themselves.
