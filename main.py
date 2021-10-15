@@ -50,19 +50,31 @@ class World:
         ("Studio", 1, 3, 2)
                     ]
 
+    def GetRoomNameFromTuple(self, roomTuple):
+        return roomTuple[0]
+
+    def GetXAxisFromTuple(self, roomTuple):
+        return roomTuple[1]
+
+    def GetYAxisFromTuple(self, roomTuple):
+        return roomTuple[2]
+
+    def GetZAxisFromTuple(self, roomTuple):
+        return roomTuple[3]
+
     def AddRoom(self, roomName):
-        room = Room(roomName)
-        return room
+        initializedRoom = Room(roomName)
+        return initializedRoom
 
     def AddWorldModule(self, roomTuple):
-        room = self.AddRoom(roomTuple[0])
-        worldModule = WorldModule(room,roomTuple[1],roomTuple[2],roomTuple[3])
+        initializedRoom = self.AddRoom(self.GetRoomNameFromTuple(roomTuple))
+        worldModule = WorldModule(initializedRoom,self.GetXAxisFromTuple(roomTuple),self.GetYAxisFromTuple(roomTuple),self.GetZAxisFromTuple(roomTuple))
         return worldModule
 
-    def CreateAllModules(self):
+    def InitializeAllWorldModules(self):
         for i in self.__roomTuples:
-            module = self.AddWorldModule(i)
-            self.__worldModule3DArray[i[1]][i[2]][i[3]] = module
+            initializedWorldModule = self.AddWorldModule(i)
+            self.__worldModule3DArray[initializedWorldModule.GetXAxis()][initializedWorldModule.GetYAxis()][initializedWorldModule.GetZAxis()] = initializedWorldModule
 
     def GetWorldModule3DArray(self):
         return self.__worldModule3DArray
@@ -78,6 +90,15 @@ class WorldModule:
     def GetModuleRoom(self):
         return self.__room
 
+    def GetXAxis(self):
+        return self.__xAxis
+
+    def GetYAxis(self):
+        return self.__yAxis
+
+    def GetZAxis(self):
+        return self.__zAxis
+
 
 
 # Static objects should be held by the room, but MOVEABLE objects should be independent. XYZ of player should be linked up with the XYZ of the room by the director. OR have a world object that curates lists and passes it to the director. If two things interact, a higher thing should mediate them.
@@ -88,7 +109,7 @@ class WorldModule:
 
 
 world1 = World()
-world1.CreateAllModules()
+world1.InitializeAllWorldModules()
 print(world1.GetWorldModule3DArray()[2][4][1].GetModuleRoom().GetRoomName())
 
 
