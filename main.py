@@ -31,7 +31,7 @@ class EntityID():
 class World:
     def __init__(self):
         self.__worldModule3DArray = [[[[] for i in range(5)] for j in range(5)] for k in range(5)]
-        self.__worldModuleLocationDictionary = {}
+        self.__worldModuleLocationList = [None for i in range(100)]
 
         self.__roomTuplesList = [
         ("Basement", (1, 2, 0)),
@@ -87,7 +87,7 @@ class World:
         return initializedModule
 
     def SetModuleCoordinateInLocationDictionary(self, worldModuleKey, coordinateTuple):
-        self.__worldModuleLocationDictionary[worldModuleKey] = coordinateTuple
+        self.__worldModuleLocationList[worldModuleKey] = coordinateTuple
 
 
     def InitializeAllWorldModules(self):
@@ -105,7 +105,7 @@ class World:
 
 
     def GetWorldModuleLocationDictionary(self):
-        return self.__worldModuleLocationDictionary
+        return self.__worldModuleLocationList
 
 
     def GetWorldModule3DArray(self):
@@ -115,7 +115,6 @@ class World:
         initializedWorldModuleList = self.InitializeAllWorldModules()
         self.SetWorldModule3DArrayLocation(initializedWorldModuleList)
 
-#To  this point are all WorldSetup Functions
 
     def CheckClassWorldModule(self, worldModule):
         return isinstance(worldModule,WorldModule)
@@ -139,3 +138,4 @@ world1.WorldSetup()
 #print(world1.GetWorldModule3DArray()[2][4][1])
 print(world1.GetWorldModuleFrom3DArray(world1.GetWorldModuleLocationDictionary()[0]))
 print(world1.GetWorldModuleLocationDictionary()[0])
+print(world1.GetWorldModuleFrom3DArray((1,2,0)).GetModuleRoom().GetRoomName())
