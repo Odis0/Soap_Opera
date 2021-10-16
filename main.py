@@ -31,6 +31,8 @@ class EntityID():
 class World:
     def __init__(self):
         self.__worldModule3DArray = [[[[] for i in range(5)] for j in range(5)] for k in range(5)]
+        self.__worldModuleLocationDictionary = {}
+
         self.__roomTuplesList = [
         ("Basement", (1, 2, 0)),
         ("Front_Yard", (0, 1, 1)),
@@ -84,6 +86,9 @@ class World:
         initializedModule = WorldModule(roomModule,self.GetXAxisFromCoordinateTuple(coordinateTuple), self.GetYAxisFromCoordinateTuple(coordinateTuple), self.GetZAxisFromCoordinateTuple(coordinateTuple))
         return initializedModule
 
+    def SetModuleCoordinateInLocationDictionary(self, worldModuleKey, coordinateTuple):
+        self.__worldModuleLocationDictionary[worldModuleKey] = coordinateTuple
+
 
     def InitializeAllWorldModules(self):
         initializedRoomList = self.InitializeAllRooms()
@@ -94,8 +99,14 @@ class World:
         return initializedWorldModuleList
 
     def SetWorldModule3DArrayLocation(self, initializedWorldModuleList):
-        for worldModule in initializedWorldModuleList:
+        for counter, worldModule in enumerate(initializedWorldModuleList):
+            self.SetModuleCoordinateInLocationDictionary(counter, worldModule.GetCoordinateTuple())
             self.__worldModule3DArray[worldModule.GetXAxis()][worldModule.GetYAxis()][worldModule.GetZAxis()].append(worldModule)
+
+
+    def GetWorldModuleLocationDictionary(self):
+        return self.__worldModuleLocationDictionary
+
 
     def GetWorldModule3DArray(self):
         return self.__worldModule3DArray
@@ -110,8 +121,8 @@ class World:
         return isinstance(worldModule,WorldModule)
 
 
-    def GetWorldModuleFrom3DArray(self, xAxis, yAxis, zAxis):
-        for initializedObject in self.__worldModule3DArray[xAxis][yAxis][zAxis]:
+    def GetWorldModuleFrom3DArray(self, coordinateTuple):
+        for initializedObject in self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]:
             if self.CheckClassWorldModule(initializedObject):
                 return initializedObject
 
@@ -124,7 +135,7 @@ class World:
 world1 = World()
 world1.WorldSetup()
 #print(world1.GetWorldModule3DArray()[2][4][1].GetModuleRoom().GetRoomName())
-print(world1.CheckClassWorldModule(world1.GetWorldModule3DArray()[2][4][1]))
-print(world1.GetWorldModule3DArray()[2][4][1])
-print(world1.GetWorldModuleFrom3DArray(4,4,1))
-
+#print(world1.CheckClassWorldModule(world1.GetWorldModule3DArray()[2][4][1]))
+#print(world1.GetWorldModule3DArray()[2][4][1])
+print(world1.GetWorldModuleFrom3DArray(world1.GetWorldModuleLocationDictionary()[0]))
+print(world1.GetWorldModuleLocationDictionary()[0])

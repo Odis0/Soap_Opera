@@ -4,6 +4,7 @@ class WorldModule:
         self.__xAxis = xAxis
         self.__yAxis = yAxis
         self.__zAxis = zAxis
+        self.__coordinateTuple = (xAxis, yAxis, zAxis)
 
     def GetModuleRoom(self):
         return self.__room
@@ -16,3 +17,6 @@ class WorldModule:
 
     def GetZAxis(self):
         return self.__zAxis
+
+    def GetCoordinateTuple(self):
+        return self.__coordinateTuple
