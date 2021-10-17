@@ -59,7 +59,7 @@ class World:
         initializedModule = WorldModule(roomModule,self.GetXAxisFromCoordinateTuple(coordinateTuple), self.GetYAxisFromCoordinateTuple(coordinateTuple), self.GetZAxisFromCoordinateTuple(coordinateTuple))
         return initializedModule
 
-    def SetModuleCoordinateInLocationDictionary(self, worldModuleKey, coordinateTuple):
+    def SetModuleCoordinateInLocationList(self, worldModuleKey, coordinateTuple):
         self.__worldModuleLocationList[worldModuleKey] = coordinateTuple
 
 
@@ -71,18 +71,17 @@ class World:
             initializedWorldModuleList.append(initializedWorldModule)
         return initializedWorldModuleList
 
+    def SetAllWorldModuleIDs(self, initializedWorldModulesList):
+        for counter, initializedWorldModule in enumerate(initializedWorldModulesList):
+            initializedWorldModule.SetWorldModuleID(counter)
+
+
     def SetWorldModule3DArrayLocation(self, initializedWorldModuleList):
-        for counter, worldModule in enumerate(initializedWorldModuleList):
-            self.SetModuleCoordinateInLocationDictionary(counter, worldModule.GetCoordinateTuple())
+        self.SetAllWorldModuleIDs(initializedWorldModuleList)
+        for worldModule in initializedWorldModuleList:
+            self.SetModuleCoordinateInLocationList(worldModule.GetWorldModuleID(), worldModule.GetCoordinateTuple())
             self.__worldModule3DArray[worldModule.GetXAxis()][worldModule.GetYAxis()][worldModule.GetZAxis()].append(worldModule)
 
-
-    def GetWorldModuleLocationDictionary(self):
-        return self.__worldModuleLocationList
-
-
-    def GetWorldModule3DArray(self):
-        return self.__worldModule3DArray
 
     def WorldSetup(self):
         initializedWorldModuleList = self.InitializeAllWorldModules()
@@ -93,10 +92,20 @@ class World:
         return isinstance(worldModule,WorldModule)
 
 
+    def GetWorldModuleLocationList(self):
+        return self.__worldModuleLocationList
+
+
+    def GetWorldModule3DArray(self):
+        return self.__worldModule3DArray
+
     def GetWorldModuleFrom3DArray(self, coordinateTuple):
-        for initializedObject in self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]:
-            if self.CheckClassWorldModule(initializedObject):
-                return initializedObject
+        try:
+            for initializedObject in self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]:
+                if self.CheckClassWorldModule(initializedObject):
+                    return initializedObject
+        except:
+            pass
 
 
     def CalculateWorldModuleXAxisDistance(self, worldModule1, worldModule2):
@@ -109,11 +118,15 @@ class World:
         return abs(worldModule2.GetZAxis() - worldModule1.GetZAxis())
 
     def CalculateWorldModuleTotalDistance(self, worldModule1, worldModule2):
-        xDistance = self.CalculateWorldModuleXAxisDistance(worldModule1, worldModule2)
-        yDistance = self.CalculateWorldModuleYAxisDistance(worldModule1, worldModule2)
-        zDistance = self.CalculateWorldModuleZAxisDistance(worldModule1,worldModule2)
-        totalDistance = xDistance + yDistance + zDistance
-        return totalDistance
+        try:
+            xDistance = self.CalculateWorldModuleXAxisDistance(worldModule1, worldModule2)
+            yDistance = self.CalculateWorldModuleYAxisDistance(worldModule1, worldModule2)
+            zDistance = self.CalculateWorldModuleZAxisDistance(worldModule1,worldModule2)
+            totalDistance = xDistance + yDistance + zDistance
+            return totalDistance
+        except:
+            pass
+
 
     def CheckWorldModuleCoordinateAdjacency(self,worldModule1, worldModule2):
         return self.CalculateWorldModuleTotalDistance(worldModule1,worldModule2) == 1

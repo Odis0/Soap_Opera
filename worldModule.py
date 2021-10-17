@@ -1,5 +1,6 @@
 class WorldModule:
     def __init__(self, room, xAxis, yAxis, zAxis): #Change room to module object. Static objects.
+        self.__worldModuleID = None
         self.__room = room
         self.__coordinateTuple = (xAxis, yAxis, zAxis)
 
@@ -17,3 +18,9 @@ class WorldModule:
 
     def GetCoordinateTuple(self):
         return self.__coordinateTuple
+
+    def SetWorldModuleID(self, worldModuleID):
+        self.__worldModuleID = worldModuleID
+
+    def GetWorldModuleID(self):
+        return self.__worldModuleID
