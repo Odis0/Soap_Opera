@@ -3,6 +3,8 @@ class WorldModule:
         self.__worldModuleID = None
         self.__room = room
         self.__coordinateTuple = (xAxis, yAxis, zAxis)
+        self.__worldModuleAdjacenies = []
+
 
     def GetModuleRoom(self):
         return self.__room
@@ -24,3 +26,7 @@ class WorldModule:
 
     def GetWorldModuleID(self):
         return self.__worldModuleID
+
+    def AddWorldModuleAdjacency(self, worldModuleID):
+        self.__worldModuleAdjacenies.append(worldModuleID)
+
