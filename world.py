@@ -97,3 +97,22 @@ class World:
         for initializedObject in self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]:
             if self.CheckClassWorldModule(initializedObject):
                 return initializedObject
+
+
+    def CalculateWorldModuleXAxisDistance(self, worldModule1, worldModule2):
+        return abs(worldModule2.GetXAxis() - worldModule1.GetXAxis())
+
+    def CalculateWorldModuleYAxisDistance(self, worldModule1, worldModule2):
+        return abs(worldModule2.GetYAxis() - worldModule1.GetYAxis())
+
+    def CalculateWorldModuleZAxisDistance(self, worldModule1, worldModule2):
+        return abs(worldModule2.GetZAxis() - worldModule1.GetZAxis())
+
+    def CalculateWorldModuleTotalDistance(self, worldModule1, worldModule2):
+        xDistance = self.CalculateWorldModuleXAxisDistance(worldModule1, worldModule2)
+        yDistance = self.CalculateWorldModuleYAxisDistance(worldModule1, worldModule2)
+        zDistance = self.CalculateWorldModuleZAxisDistance(worldModule1,worldModule2)
+        totalDistance = xDistance + yDistance + zDistance
+        return totalDistance
+
+    #def CheckWorldModuleAdjacencyInArray(self,worldModule1, worldModule2):
