@@ -8,7 +8,7 @@ class World:
 
         self.__roomTuplesList = [
         ("Basement", (1, 2, 0)),
-        ("Front_Yard", (0, 1, 1)),
+        ("Front_Yard", (1, 0, 1)),
         ("Office", (0, 1, 1)),
         ("Entry_Hall", (1, 1, 1)),
         ("Garage", (2, 1, 1)),
@@ -115,4 +115,5 @@ class World:
         totalDistance = xDistance + yDistance + zDistance
         return totalDistance
 
-    #def CheckWorldModuleAdjacencyInArray(self,worldModule1, worldModule2):
+    def CheckWorldModuleCoordinateAdjacency(self,worldModule1, worldModule2):
+        return self.CalculateWorldModuleTotalDistance(worldModule1,worldModule2) == 1
