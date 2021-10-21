@@ -1,6 +1,5 @@
 from entity import Entity
 class Agent(Entity):
-    def __init__(self, agentID, agentName):
-        Entity.__init__(self,agentID,agentName)
-        self.__agentID = agentID
+    def __init__(self, agentName):
+        Entity.__init__(self, agentName)
         self.__agentName = agentName

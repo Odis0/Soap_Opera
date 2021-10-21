@@ -21,7 +21,7 @@ class WorldModule:
     def GetCoordinateTuple(self):
         return self.__coordinateTuple
 
-    def SetWorldModuleID(self, worldModuleID):
+    def SetID(self, worldModuleID):
         self.__worldModuleID = worldModuleID
 
     def GetWorldModuleID(self):

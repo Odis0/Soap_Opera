@@ -1,12 +1,12 @@
 class Entity:
-    def __init__(self, entityID, entityName):
-        self.__entityID = entityID
+    def __init__(self, entityName):
+        self.__entityID = None
         self.__entityName = entityName
 
     def GetEntityID(self):
         return self.__entityID
 
-    def SetEntityID(self, entityID):
+    def SetID(self, entityID):
         self.__entityID = entityID
 
 

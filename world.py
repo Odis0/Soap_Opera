@@ -1,10 +1,12 @@
 from worldModule import WorldModule
 from room import Room
+from entity import Entity
 
 class World:
     def __init__(self):
         self.__worldModule3DArray = [[[[] for i in range(5)] for j in range(5)] for k in range(5)]
-        self.__worldModuleLocationList = [None for i in range(100)]
+        self.__worldModuleLocationList = [None for i in range(1000)]
+        self.__entityLocationList = [None for i in range(1000)]
 
         self.__roomTuplesList = [
         ("Basement", (1, 2, 0)),
@@ -25,6 +27,11 @@ class World:
         ("Landing", (1, 2, 2)),
         ("Studio", (1, 3, 2))
                             ]
+        self.__entityTuplesList = [
+            ("Aaron",(1,1,1))
+        ]
+
+
 
     def GetRoomTuplesList(self):
         return self.__roomTuplesList
@@ -32,7 +39,7 @@ class World:
     def GetRoomNameFromTuple(self, roomTuple):
         return roomTuple[0]
 
-    def GetRoomCoordinateTuple(self, coordinateTuple):
+    def GetCoordinateTuple(self, coordinateTuple):
         return coordinateTuple[1]
 
     def GetXAxisFromCoordinateTuple(self, coordinateTuple):
@@ -43,6 +50,12 @@ class World:
 
     def GetZAxisFromCoordinateTuple(self, coordinateTuple):
         return coordinateTuple[2]
+
+    def GetEntityTuplesList(self):
+        return self.__entityTuplesList
+
+    def GetEntityNameFromTuple(self, entityTuple):
+        return entityTuple[0]
 
     def InitializeRoom(self, roomName):
         initializedRoom = Room(roomName)
@@ -59,6 +72,8 @@ class World:
         initializedModule = WorldModule(roomModule,self.GetXAxisFromCoordinateTuple(coordinateTuple), self.GetYAxisFromCoordinateTuple(coordinateTuple), self.GetZAxisFromCoordinateTuple(coordinateTuple))
         return initializedModule
 
+
+
     def SetModuleCoordinateInLocationList(self, worldModuleID, coordinateTuple):
         self.__worldModuleLocationList[worldModuleID] = coordinateTuple
 
@@ -67,25 +82,50 @@ class World:
         initializedRoomList = self.InitializeAllRooms()
         initializedWorldModuleList = []
         for initializedRoom, roomTuple in enumerate(self.GetRoomTuplesList()):
-            initializedWorldModule = self.InitializeWorldModule(initializedRoomList[initializedRoom], self.GetRoomCoordinateTuple(roomTuple))
+            initializedWorldModule = self.InitializeWorldModule(initializedRoomList[initializedRoom], self.GetCoordinateTuple(roomTuple))
             initializedWorldModuleList.append(initializedWorldModule)
         return initializedWorldModuleList
 
-    def SetAllWorldModuleIDs(self, initializedWorldModulesList):
-        for counter, initializedWorldModule in enumerate(initializedWorldModulesList):
-            initializedWorldModule.SetWorldModuleID(counter)
+
+
+    def SetAllObjectIDs(self, initializedObjectsList):
+        for counter, initializedObject in enumerate(initializedObjectsList):
+            initializedObject.SetID(counter)
 
 
     def SetWorldModule3DArrayLocation(self, initializedWorldModuleList):
-        self.SetAllWorldModuleIDs(initializedWorldModuleList)
+        self.SetAllObjectIDs(initializedWorldModuleList)
         for worldModule in initializedWorldModuleList:
             self.SetModuleCoordinateInLocationList(worldModule.GetWorldModuleID(), worldModule.GetCoordinateTuple())
             self.__worldModule3DArray[worldModule.GetXAxis()][worldModule.GetYAxis()][worldModule.GetZAxis()].append(worldModule)
 
 
+
+
+    def InitializeAllEntities(self):
+        initializedEntityList = []
+        for entityTuple in self.GetEntityTuplesList():
+            initializedEntity = Entity(self.GetEntityNameFromTuple(entityTuple))
+            initializedEntityList.append(initializedEntity)
+        return initializedEntityList
+
+    def SetEntityCoordinateInLocationList(self, entityID, coordinateTuple):
+        self.__entityLocationList[entityID] = coordinateTuple
+
+    def SetEntity3DArrayLocation(self, initializedEntityList):
+        self.SetAllObjectIDs(initializedEntityList)
+        for counter, entity in enumerate(initializedEntityList):
+            entityCoordinateTuple = self.GetCoordinateTuple(self.GetEntityTuplesList()[counter])
+            self.SetEntityCoordinateInLocationList(entity.GetEntityID(), entityCoordinateTuple)
+            self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(entityCoordinateTuple)][self.GetYAxisFromCoordinateTuple(entityCoordinateTuple)][self.GetZAxisFromCoordinateTuple(entityCoordinateTuple)].append(entity)
+
+
+
     def WorldSetup(self):
         initializedWorldModuleList = self.InitializeAllWorldModules()
         self.SetWorldModule3DArrayLocation(initializedWorldModuleList)
+        initializedEntityList = self.InitializeAllEntities()
+        self.SetEntity3DArrayLocation(initializedEntityList)
 
 
     def CheckClassWorldModule(self, worldModule):
@@ -99,9 +139,12 @@ class World:
     def GetWorldModule3DArray(self):
         return self.__worldModule3DArray
 
+    def GetAllObjectsAt3DArrayLocation(self, coordinateTuple):
+        return self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]
+
     def GetWorldModuleFrom3DArray(self, coordinateTuple):
         try:
-            for initializedObject in self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)]:
+            for initializedObject in self.GetAllObjectsAt3DArrayLocation(coordinateTuple):
                 if self.CheckClassWorldModule(initializedObject):
                     return initializedObject
         except:
@@ -130,3 +173,4 @@ class World:
 
     def CheckWorldModuleCoordinateAdjacency(self,worldModule1, worldModule2):
         return self.CalculateWorldModuleTotalDistance(worldModule1,worldModule2) == 1
+
