@@ -20,3 +20,4 @@ print(world1.CalculateWorldModuleTotalDistance(world1.GetWorldModuleFrom3DArray(
 print(world1.CheckWorldModuleCoordinateAdjacency(world1.GetWorldModuleFrom3DArray((1,0,1)),world1.GetWorldModuleFrom3DArray((4,1,1))))
 print(world1.GetWorldModuleFrom3DArray((4,4,4)))
 print(world1.GetAllObjectsAt3DArrayLocation((1,1,1)))
+print(world1.GetEntityCoordinateTuple(1))

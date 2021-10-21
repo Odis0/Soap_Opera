@@ -30,7 +30,7 @@ class World:
                             ]
         self.__entityTuplesList = [
             ("Aaron",(1,1,1),Agent),
-            ("Wheelbarrow", (1, 1, 1), Entity)
+            ("Wheelbarrow", (0, 2, 2), Entity)
         ]
 
 
@@ -179,4 +179,10 @@ class World:
 
     def CheckWorldModuleCoordinateAdjacency(self,worldModule1, worldModule2):
         return self.CalculateWorldModuleTotalDistance(worldModule1,worldModule2) == 1
+
+    def GetEntityLocationList(self):
+        return self.__entityLocationList
+
+    def GetEntityCoordinateTuple(self, entityID):
+        return self.GetEntityLocationList()[entityID]
 
