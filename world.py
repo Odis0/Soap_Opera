@@ -1,6 +1,7 @@
 from worldModule import WorldModule
 from room import Room
 from entity import Entity
+from agent import Agent
 
 class World:
     def __init__(self):
@@ -28,7 +29,8 @@ class World:
         ("Studio", (1, 3, 2))
                             ]
         self.__entityTuplesList = [
-            ("Aaron",(1,1,1))
+            ("Aaron",(1,1,1),Agent),
+            ("Wheelbarrow", (1, 1, 1), Entity)
         ]
 
 
@@ -56,6 +58,9 @@ class World:
 
     def GetEntityNameFromTuple(self, entityTuple):
         return entityTuple[0]
+
+    def GetEntityTypeFromTuple(self, entityTuple):
+        return entityTuple[2]
 
     def InitializeRoom(self, roomName):
         initializedRoom = Room(roomName)
@@ -105,7 +110,8 @@ class World:
     def InitializeAllEntities(self):
         initializedEntityList = []
         for entityTuple in self.GetEntityTuplesList():
-            initializedEntity = Entity(self.GetEntityNameFromTuple(entityTuple))
+            entityType = self.GetEntityTypeFromTuple(entityTuple)
+            initializedEntity = entityType(self.GetEntityNameFromTuple(entityTuple))
             initializedEntityList.append(initializedEntity)
         return initializedEntityList
 
