@@ -59,8 +59,8 @@ class World:
         initializedModule = WorldModule(roomModule,self.GetXAxisFromCoordinateTuple(coordinateTuple), self.GetYAxisFromCoordinateTuple(coordinateTuple), self.GetZAxisFromCoordinateTuple(coordinateTuple))
         return initializedModule
 
-    def SetModuleCoordinateInLocationList(self, worldModuleKey, coordinateTuple):
-        self.__worldModuleLocationList[worldModuleKey] = coordinateTuple
+    def SetModuleCoordinateInLocationList(self, worldModuleID, coordinateTuple):
+        self.__worldModuleLocationList[worldModuleID] = coordinateTuple
 
 
     def InitializeAllWorldModules(self):
