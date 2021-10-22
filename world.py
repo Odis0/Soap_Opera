@@ -118,15 +118,12 @@ class World:
     def SetEntityCoordinateInLocationList(self, entityID, coordinateTuple):
         self.__entityLocationList[entityID] = coordinateTuple
 
-    def AddObjectTo3DArray(self, object, coordinateTuple):
-        self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(coordinateTuple)][self.GetYAxisFromCoordinateTuple(coordinateTuple)][self.GetZAxisFromCoordinateTuple(coordinateTuple)].append(object)
-
-    def SetAllEntity3DArrayLocations(self, initializedEntityList):
+    def SetEntity3DArrayLocation(self, initializedEntityList):
         self.SetAllObjectIDs(initializedEntityList)
         for counter, entity in enumerate(initializedEntityList):
             entityCoordinateTuple = self.GetCoordinateTuple(self.GetEntityTuplesList()[counter])
             self.SetEntityCoordinateInLocationList(entity.GetEntityID(), entityCoordinateTuple)
-            self.AddObjectTo3DArray(entity)
+            self.__worldModule3DArray[self.GetXAxisFromCoordinateTuple(entityCoordinateTuple)][self.GetYAxisFromCoordinateTuple(entityCoordinateTuple)][self.GetZAxisFromCoordinateTuple(entityCoordinateTuple)].append(entity)
 
 
 
@@ -134,7 +131,7 @@ class World:
         initializedWorldModuleList = self.InitializeAllWorldModules()
         self.SetWorldModule3DArrayLocation(initializedWorldModuleList)
         initializedEntityList = self.InitializeAllEntities()
-        self.SetAllEntity3DArrayLocations(initializedEntityList)
+        self.SetEntity3DArrayLocation(initializedEntityList)
 
 
     def CheckClassWorldModule(self, worldModule):
@@ -189,16 +186,3 @@ class World:
     def GetEntityCoordinateTuple(self, entityID):
         return self.GetEntityLocationList()[entityID]
 
-
-
- '''   
- 
- Need to create a remove object from location function to finish this movement function.
- 
- def MoveEntityInArray(self, object, destinationCoordinateTuple):
-        startLocation = self.GetEntityCoordinateTuple()
-        self.AddObjectTo3DArray(object,destinationCoordinateTuple)
-
-
-
-'''
